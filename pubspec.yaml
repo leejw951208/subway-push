@@ -1,0 +1,8 @@
+name: subway_push_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - apps/mobile

@@ -1,0 +1,26 @@
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Node / NestJS
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dart / Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+pubspec.lock
+
+# Prisma
+apps/api/src/generated/

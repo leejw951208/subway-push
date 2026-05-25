@@ -1,0 +1,22 @@
+{
+    "name": "subway-push",
+    "private": true,
+    "version": "0.1.0",
+    "description": "Flutter, NestJS, Prisma, and PostgreSQL monorepo.",
+    "workspaces": [
+        "apps/api"
+    ],
+    "scripts": {
+        "api:build": "npm run build -w @subway-push/api",
+        "api:dev": "npm run start:dev -w @subway-push/api",
+        "api:start": "npm run start -w @subway-push/api",
+        "api:test": "npm run test -w @subway-push/api",
+        "api:lint": "npm run lint -w @subway-push/api",
+        "prisma:generate": "npm run prisma:generate -w @subway-push/api",
+        "prisma:migrate": "npm run prisma:migrate -w @subway-push/api",
+        "prisma:studio": "npm run prisma:studio -w @subway-push/api"
+    },
+    "engines": {
+        "node": ">=20"
+    }
+}
