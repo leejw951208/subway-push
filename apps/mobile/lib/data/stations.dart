@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+
+import '../models/station.dart';
+
+const Map<String, Color> lineColors = {
+  '1': Color(0xFF0052A4),
+  '2': Color(0xFF00A84D),
+  '3': Color(0xFFEF7C1C),
+  '4': Color(0xFF00A5DE),
+  '5': Color(0xFF996CAC),
+  '6': Color(0xFFCD7C2F),
+  '7': Color(0xFF747F00),
+  '8': Color(0xFFE6186C),
+  '9': Color(0xFFBDB092),
+  '경의중앙': Color(0xFF77C4A3),
+  '공항': Color(0xFF0090D2),
+  '분당': Color(0xFFFABE00),
+  '신분당': Color(0xFFD4003B),
+  '경춘': Color(0xFF0C8E72),
+};
+
+const stations = <Station>[
+  Station('강남', ['2', '신분당'], '강남구 · 환승역'),
+  Station('홍대입구', ['2', '경의중앙', '공항'], '마포구 · 환승역'),
+  Station('잠실', ['2', '8'], '송파구 · 환승역'),
+  Station('사당', ['2', '4'], '관악구 · 환승역'),
+  Station('서울역', ['1', '4', '경의중앙', '공항'], '용산구 · 환승역'),
+  Station('시청', ['1', '2'], '중구 · 환승역'),
+  Station('종로3가', ['1', '3', '5'], '종로구 · 환승역'),
+  Station('명동', ['4'], '중구'),
+  Station('신도림', ['1', '2'], '구로구 · 환승역'),
+  Station('신촌', ['2'], '서대문구'),
+  Station('이태원', ['6'], '용산구'),
+  Station('건대입구', ['2', '7'], '광진구 · 환승역'),
+  Station('합정', ['2', '6'], '마포구 · 환승역'),
+  Station('여의도', ['5', '9'], '영등포구 · 환승역'),
+  Station('압구정', ['3'], '강남구'),
+  Station('성수', ['2'], '성동구'),
+  Station('신사', ['3', '신분당'], '강남구 · 환승역'),
+  Station('교대', ['2', '3'], '서초구 · 환승역'),
+  Station('선릉', ['2', '분당'], '강남구 · 환승역'),
+  Station('삼성', ['2'], '강남구'),
+  Station('역삼', ['2'], '강남구'),
+  Station('양재', ['3', '신분당'], '서초구 · 환승역'),
+  Station('왕십리', ['2', '5', '경의중앙', '분당'], '성동구 · 환승역'),
+  Station('동대문', ['1', '4'], '종로구 · 환승역'),
+  Station('광화문', ['5'], '종로구'),
+  Station('을지로입구', ['2'], '중구'),
+  Station('안국', ['3'], '종로구'),
+  Station('혜화', ['4'], '종로구'),
+  Station('서울대입구', ['2'], '관악구'),
+  Station('강변', ['2'], '광진구'),
+];
