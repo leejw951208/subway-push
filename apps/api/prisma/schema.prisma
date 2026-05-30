@@ -13,16 +13,21 @@ model User {
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  pushes    Push[]
+  alerts    Alert[]
 }
 
-model Push {
+model Alert {
   id        Int      @id @default(autoincrement())
-  title     String
-  body      String?
-  sentAt    DateTime?
+  stationName String
+  description String?
+  lines     String[]
+  push      Boolean  @default(true)
+  vibration Boolean  @default(true)
+  voice     Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   owner     User?    @relation(fields: [ownerId], references: [id])
   ownerId   Int?
+
+  @@index([stationName])
 }

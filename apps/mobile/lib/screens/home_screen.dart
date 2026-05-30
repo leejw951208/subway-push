@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../api/subway_repository.dart';
 import '../data/stations.dart';
 import '../models/station.dart';
 import '../models/subway_alert.dart';
+import '../notifications/notification_service.dart';
 import '../sheets/alert_list_sheet.dart';
 import '../sheets/alert_sheet.dart';
 import '../sheets/alert_sheet_result.dart';
+import '../state/alert_controller.dart';
 import '../theme/app_colors.dart';
 import '../theme/decorations.dart';
 import '../widgets/alert_widgets.dart';
@@ -14,27 +19,27 @@ import '../widgets/search_pebble.dart';
 import '../widgets/station_widgets.dart';
 import 'search_overlay.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({NotificationService? notificationService, super.key})
+      : _notificationService = notificationService;
+
+  final NotificationService? _notificationService;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _queryController = TextEditingController();
+  late final NotificationService _notificationService =
+      widget._notificationService ?? NotificationService();
   bool _searching = false;
-  List<SubwayAlert> _alerts = const [
-    SubwayAlert(station: Station('잠실', ['2', '8'], '송파구 · 환승역')),
-    SubwayAlert(
-      station: Station('강남', ['2', '신분당'], '강남구 · 환승역'),
-      vibration: false,
-    ),
-    SubwayAlert(
-      station: Station('서울역', ['1', '4', '경의중앙', '공항'], '용산구 · 환승역'),
-      voice: true,
-    ),
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(alertControllerProvider.notifier).load());
+  }
 
   @override
   void dispose() {
@@ -44,20 +49,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final alerts = ref.watch(alertControllerProvider);
+    final remoteStations = ref.watch(remoteStationsProvider);
+
     return Scaffold(
       backgroundColor: appSoft,
       body: Stack(
         children: [
           _HomeContent(
-            alerts: _alerts,
+            alerts: alerts,
+            remoteStations: remoteStations,
             onSearch: () => setState(() => _searching = true),
             onStationTap: _openAlertSheet,
             onAlertStackTap: _openAlertListSheet,
+            onTestNotification: _showTestNotification,
           ),
           if (_searching)
             SearchOverlay(
               controller: _queryController,
-              alerts: _alerts,
+              alerts: alerts,
               onBack: () {
                 _queryController.clear();
                 setState(() => _searching = false);
@@ -74,7 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => AlertListSheet(alerts: _alerts),
+      builder: (context) =>
+          AlertListSheet(alerts: ref.read(alertControllerProvider)),
     );
 
     if (picked != null) {
@@ -83,7 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _openAlertSheet(Station station) async {
-    final existing = _findAlert(station);
+    final controller = ref.read(alertControllerProvider.notifier);
+    final existing = controller.findByStation(station);
     final result = await showModalBottomSheet<AlertSheetResult>(
       context: context,
       isScrollControlled: true,
@@ -95,26 +107,20 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    setState(() {
-      _searching = false;
-      _queryController.clear();
-      if (result.remove) {
-        _alerts = _alerts
-            .where((alert) => alert.station.name != station.name)
-            .toList();
-      } else {
-        final next = SubwayAlert(
+    setState(() => _searching = false);
+    _queryController.clear();
+    if (result.remove) {
+      await controller.removeAlert(station);
+    } else {
+      await controller.upsertAlert(
+        SubwayAlert(
           station: station,
           push: result.push,
           vibration: result.vibration,
           voice: result.voice,
-        );
-        _alerts = [
-          next,
-          ..._alerts.where((alert) => alert.station.name != station.name),
-        ];
-      }
-    });
+        ),
+      );
+    }
 
     if (!mounted) {
       return;
@@ -137,33 +143,122 @@ class _HomeScreenState extends State<HomeScreen> {
       );
   }
 
-  SubwayAlert? _findAlert(Station station) {
-    for (final alert in _alerts) {
-      if (alert.station.name == station.name) {
-        return alert;
+  Future<void> _showTestNotification() async {
+    try {
+      await _notificationService.initialize();
+      final status = await _notificationService.requestPermission();
+
+      if (!mounted) {
+        return;
       }
+
+      if (!status.isGranted) {
+        _showSnackBar('알림 권한이 필요해요');
+        return;
+      }
+
+      await _notificationService.showTestNotification();
+    } on Object {
+      if (!mounted) {
+        return;
+      }
+      _showSnackBar('알림을 보낼 수 없어요');
     }
-    return null;
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: appInk,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          content: Text(message,
+              style: const TextStyle(fontWeight: FontWeight.w700)),
+        ),
+      );
+  }
+}
+
+class _ApiStatusBanner extends ConsumerWidget {
+  const _ApiStatusBanner({required this.remoteStations});
+
+  final AsyncValue<List<Station>> remoteStations;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return remoteStations.when(
+      data: (_) => const SizedBox.shrink(),
+      loading: () => const Padding(
+        padding: EdgeInsets.only(bottom: 14),
+        child: Text(
+          '역 정보를 불러오는 중',
+          style: TextStyle(
+            color: appMuted,
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+      error: (_, __) => Padding(
+        padding: const EdgeInsets.only(bottom: 14),
+        child: Pebble(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  '역 정보를 불러오지 못했어요',
+                  style: TextStyle(
+                    color: appInk,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => ref.invalidate(remoteStationsProvider),
+                child: const Text('다시 시도'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
 class _HomeContent extends StatelessWidget {
   const _HomeContent({
     required this.alerts,
+    required this.remoteStations,
     required this.onSearch,
     required this.onStationTap,
     required this.onAlertStackTap,
+    required this.onTestNotification,
   });
 
   final List<SubwayAlert> alerts;
+  final AsyncValue<List<Station>> remoteStations;
   final VoidCallback onSearch;
   final ValueChanged<Station> onStationTap;
   final VoidCallback onAlertStackTap;
+  final VoidCallback onTestNotification;
 
   @override
   Widget build(BuildContext context) {
-    final popular = ['강남', '홍대입구', '잠실', '서울역', '사당', '신촌', '여의도']
-        .map((name) => stations.firstWhere((station) => station.name == name));
+    const popularNames = ['강남', '홍대입구', '잠실', '서울역', '사당', '신촌', '여의도'];
+    final stationSource = remoteStations.when(
+      data: (value) => value,
+      loading: () => stations,
+      error: (_, __) => stations,
+    );
+    final popular = popularNames
+        .map((name) =>
+            stationSource.where((station) => station.name == name).firstOrNull)
+        .whereType<Station>();
 
     return DecoratedBox(
       decoration: const BoxDecoration(
@@ -183,8 +278,12 @@ class _HomeContent extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 28, 20, 40),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  _Header(nearby: stations.first),
+                  _Header(
+                    nearby: stations.first,
+                    onTestNotification: onTestNotification,
+                  ),
                   const SizedBox(height: 22),
+                  _ApiStatusBanner(remoteStations: remoteStations),
                   SearchPebble(onTap: onSearch),
                   const SizedBox(height: 28),
                   SectionHeader(title: '내 알림', action: '${alerts.length}개 활성'),
@@ -222,9 +321,13 @@ class _HomeContent extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.nearby});
+  const _Header({
+    required this.nearby,
+    required this.onTestNotification,
+  });
 
   final Station nearby;
+  final VoidCallback onTestNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -242,34 +345,58 @@ class _Header extends StatelessWidget {
                 fontWeight: FontWeight.w800,
               ),
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(9, 7, 11, 7),
-              decoration: pebbleDecoration(radius: 16, shadowOpacity: 0.04),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                        color: Color(0xFF3B82F6), shape: BoxShape.circle),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Tooltip(
+                  message: '테스트 알림 보내기',
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: pebbleDecoration(
+                      radius: 18,
+                      shadowOpacity: 0.04,
+                    ),
+                    child: IconButton(
+                      onPressed: onTestNotification,
+                      icon: const Icon(Icons.notifications_active_rounded),
+                      iconSize: 18,
+                      color: const Color(0xFF3B82F6),
+                      padding: EdgeInsets.zero,
+                    ),
                   ),
-                  const SizedBox(width: 7),
-                  const Text('현재',
-                      style: TextStyle(
-                          color: appMuted,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700)),
-                  const SizedBox(width: 6),
-                  LineBadge(line: nearby.lines.first, size: 14),
-                  const SizedBox(width: 5),
-                  Text(nearby.name,
-                      style: const TextStyle(
-                          color: appInk,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w900)),
-                ],
-              ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(9, 7, 11, 7),
+                  decoration: pebbleDecoration(radius: 16, shadowOpacity: 0.04),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFF3B82F6), shape: BoxShape.circle),
+                      ),
+                      const SizedBox(width: 7),
+                      const Text('현재',
+                          style: TextStyle(
+                              color: appMuted,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700)),
+                      const SizedBox(width: 6),
+                      LineBadge(line: nearby.lines.first, size: 14),
+                      const SizedBox(width: 5),
+                      Text(nearby.name,
+                          style: const TextStyle(
+                              color: appInk,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900)),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),

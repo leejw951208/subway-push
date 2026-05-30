@@ -51,3 +51,7 @@ const stations = <Station>[
   Station('서울대입구', ['2'], '관악구'),
   Station('강변', ['2'], '광진구'),
 ];
+
+Station stationByName(String name) {
+  return stations.firstWhere((station) => station.name == name);
+}

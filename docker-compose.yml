@@ -1,0 +1,19 @@
+services:
+    postgres:
+        image: postgres:17-alpine
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: subway_push
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres -d subway_push"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+volumes:
+    postgres_data:
