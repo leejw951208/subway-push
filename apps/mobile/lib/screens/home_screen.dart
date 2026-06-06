@@ -338,7 +338,7 @@ class _Header extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              '지하철 푸시',
+              '내릴때',
               style: TextStyle(
                 color: Color(0xFF3B82F6),
                 fontSize: 14,

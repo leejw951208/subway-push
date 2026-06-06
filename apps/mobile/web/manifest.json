@@ -1,11 +1,11 @@
 {
-    "name": "subway_push",
-    "short_name": "subway_push",
+    "name": "내릴때",
+    "short_name": "내릴때",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "지하철 하차 알림 앱.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

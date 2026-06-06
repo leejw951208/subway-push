@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:label="subway_push"
+        android:label="내릴때"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -2,7 +2,7 @@
 
 ## 요약
 
-Subway Push는 Flutter 모바일 앱과 NestJS API로 나뉜다. 모바일 앱은 사용자 알림 설정 흐름과 로컬 알림 동작을 담당한다. API는 역 조회와 알림 CRUD 엔드포인트를 담당한다. Prisma와 PostgreSQL은 백엔드 알림 데이터의 영속화 경로를 제공한다.
+내릴때는 Flutter 모바일 앱과 NestJS API로 나뉜다. 모바일 앱은 사용자 알림 설정 흐름과 로컬 알림 동작을 담당한다. API는 역 조회와 알림 CRUD 엔드포인트를 담당한다. Prisma와 PostgreSQL은 백엔드 알림 데이터의 영속화 경로를 제공한다.
 
 ## 시스템 맥락
 

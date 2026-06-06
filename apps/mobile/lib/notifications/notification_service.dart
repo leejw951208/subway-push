@@ -42,13 +42,13 @@ class NotificationService {
   Future<void> showTestNotification() async {
     await _plugin.show(
       id: 1001,
-      title: '지하철 푸시',
+      title: '내릴때',
       body: '테스트 알림입니다.',
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
           'arrival_alerts',
-          'Arrival alerts',
-          channelDescription: 'Subway arrival alert notifications',
+          '내릴때 알림',
+          channelDescription: '지하철 하차 알림',
           importance: Importance.high,
           priority: Priority.high,
         ),

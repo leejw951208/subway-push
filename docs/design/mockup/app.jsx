@@ -1,4 +1,4 @@
-// 지하철 푸시 — Subway alert app (pebble design)
+// 내릴때 — Subway alert app (pebble design)
 
 const LINE_COLORS = {
   '1': '#0052A4', '2': '#00A84D', '3': '#EF7C1C', '4': '#00A5DE',
@@ -237,7 +237,7 @@ function Home({ alerts, onSearch, onAlertTap, onAlertStackTap, nearby }) {
           <div style={{
             fontSize: 14, fontWeight: 700, color: '#3B82F6',
             letterSpacing: -0.3,
-          }}>지하철 푸시</div>
+          }}>내릴때</div>
 
           <div style={{
             display: 'flex', alignItems: 'center', gap: 6,

@@ -33,12 +33,12 @@ class FakeNotificationService extends NotificationService {
 }
 
 void main() {
-  testWidgets('renders subway push home screen', (tester) async {
+  testWidgets('renders 내릴때 home screen', (tester) async {
     SharedPreferences.setMockInitialValues({});
 
     await tester.pumpWidget(const SubwayPushApp());
 
-    expect(find.text('지하철 푸시'), findsOneWidget);
+    expect(find.text('내릴때'), findsOneWidget);
     expect(find.text('역 이름을 검색해보세요'), findsOneWidget);
     expect(find.text('내 알림'), findsOneWidget);
   });

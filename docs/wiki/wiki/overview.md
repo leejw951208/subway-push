@@ -2,7 +2,7 @@
 
 ## 요약
 
-Subway Push는 Flutter 모바일 앱과 Prisma, PostgreSQL 기반 NestJS API로 구성된 모노레포다. 사용자가 선택한 지하철역에 대해 도착 알림을 설정하고, push, vibration, voice 같은 알림 옵션을 관리하는 제품이다.
+내릴때는 Flutter 모바일 앱과 Prisma, PostgreSQL 기반 NestJS API로 구성된 모노레포다. 사용자가 선택한 지하철역에 대해 도착 알림을 설정하고, push, vibration, voice 같은 알림 옵션을 관리하는 제품이다.
 
 ## 목표
 

@@ -13,7 +13,7 @@ class SubwayPushApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final app = MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Subway Push',
+      title: '내릴때',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: appBlue),
         fontFamily: 'Pretendard',

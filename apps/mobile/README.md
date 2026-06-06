@@ -1,6 +1,6 @@
-# subway_push
+# 내릴때
 
-A new Flutter project.
+지하철 하차 알림 Flutter 앱.
 
 ## Getting Started
 
