@@ -279,7 +279,7 @@ class _HomeContent extends StatelessWidget {
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   _Header(
-                    nearby: stations.first,
+                    recommended: stations.first,
                     onTestNotification: onTestNotification,
                   ),
                   const SizedBox(height: 22),
@@ -322,11 +322,11 @@ class _HomeContent extends StatelessWidget {
 
 class _Header extends StatelessWidget {
   const _Header({
-    required this.nearby,
+    required this.recommended,
     required this.onTestNotification,
   });
 
-  final Station nearby;
+  final Station recommended;
   final VoidCallback onTestNotification;
 
   @override
@@ -380,15 +380,15 @@ class _Header extends StatelessWidget {
                             color: Color(0xFF3B82F6), shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 7),
-                      const Text('현재',
+                      const Text('추천',
                           style: TextStyle(
                               color: appMuted,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
                       const SizedBox(width: 6),
-                      LineBadge(line: nearby.lines.first, size: 14),
+                      LineBadge(line: recommended.lines.first, size: 14),
                       const SizedBox(width: 5),
-                      Text(nearby.name,
+                      Text(recommended.name,
                           style: const TextStyle(
                               color: appInk,
                               fontSize: 12,

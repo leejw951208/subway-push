@@ -28,6 +28,9 @@ $feature-verify <feature-slug>
 6. `postgres-docker-prisma-migrations`
 7. `native-notification-permissions`
 8. `arrival-alert-engine`
+9. `lightweight-android-emulator-profile`
+10. `station-alert-selection`
+11. `ui-regression-screenshots`
 
 ## Features
 
@@ -200,7 +203,25 @@ Android/iOS 알림 권한과 로컬 알림 표시 기반을 추가한다.
 - 완료 기준:
   - 개발자가 빠른 에뮬레이터를 선택해 앱을 실행할 수 있다.
 
-### 10. ui-regression-screenshots
+### 10. station-alert-selection
+
+위치 권한 확인 없이 사용자가 알림 받을 역을 직접 선택하는 흐름을 기본 전략으로 삼는다.
+
+- 대상: Flutter, 제품 방향
+- 포함 범위:
+  - 홈 화면과 알림 시트가 역 선택 중심으로 표현된다.
+  - 위치 권한 요청 UI나 현재 위치 전제 문구를 추가하지 않는다.
+  - 기존 `SubwayAlert.station`을 사용자가 내릴 역으로 해석한다.
+  - 수동 탑승 모드는 후속 기능으로 분리한다.
+- 제외 범위:
+  - 기기 위치 권한 요청
+  - 현재 위치 기반 자동 역 감지
+  - 탑승 열차 자동 식별
+- 완료 기준:
+  - 위치 권한 없이 역 선택과 알림 설정 흐름이 동작한다.
+  - widget test가 직접 선택 UX 문구와 흐름을 검증한다.
+
+### 11. ui-regression-screenshots
 
 목업 기반 UI가 깨지는지 확인할 수 있는 스크린샷 검증 기반을 추가한다.
 

@@ -39,7 +39,9 @@ void main() {
     await tester.pumpWidget(const SubwayPushApp());
 
     expect(find.text('내릴때'), findsOneWidget);
-    expect(find.text('역 이름을 검색해보세요'), findsOneWidget);
+    expect(find.text('알림 받을 역을 선택하세요'), findsOneWidget);
+    expect(find.text('추천'), findsOneWidget);
+    expect(find.text('현재'), findsNothing);
     expect(find.text('내 알림'), findsOneWidget);
   });
 

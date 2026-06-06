@@ -35,7 +35,7 @@ class SearchPebble extends StatelessWidget {
           const SizedBox(width: 14),
           const Expanded(
             child: Text(
-              '역 이름을 검색해보세요',
+              '알림 받을 역을 선택하세요',
               style: TextStyle(
                   color: Color(0xFF94A3B8),
                   fontSize: 16,

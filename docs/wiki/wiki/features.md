@@ -22,6 +22,27 @@ Flutter 앱에서 사용자는 역을 검색하고, 알림 설정 시트를 열�
 
 - `../../features/README.md`
 
+## 직접 역 선택 알림
+
+### 요약
+
+사용자는 위치 권한 없이 알림 받을 역을 직접 선택한다. 홈 화면은 현재 위치가 아니라 추천 역과 검색 진입점을 제공하고, 알림 시트는 선택한 역을 내릴 역으로 저장한다.
+
+### 현재 상태
+
+구현 완료.
+
+### 관련 파일
+
+- `../../../apps/mobile/lib/widgets/search_pebble.dart`
+- `../../../apps/mobile/lib/screens/home_screen.dart`
+- `../../../apps/mobile/lib/sheets/alert_sheet.dart`
+- `../../../apps/mobile/lib/models/subway_alert.dart`
+
+### 근거 자료
+
+- `../../features/station-alert-selection/phase.md`
+
 ## 모바일 로컬 알림 저장소
 
 ### 요약
