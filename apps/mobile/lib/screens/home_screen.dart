@@ -115,6 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       await controller.upsertAlert(
         SubwayAlert(
           station: station,
+          timing: result.timing,
           push: result.push,
           vibration: result.vibration,
           voice: result.voice,

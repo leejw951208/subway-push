@@ -11,14 +11,32 @@ void main() {
     final storage = AlertStorage();
 
     await storage.saveAlerts([
-      SubwayAlert(station: stationByName('잠실'), vibration: false),
+      SubwayAlert(
+        station: stationByName('잠실'),
+        timing: AlertTiming.twoStationsBefore,
+        vibration: false,
+      ),
     ]);
 
     final loaded = await storage.loadAlerts();
 
     expect(loaded, hasLength(1));
     expect(loaded!.first.station.name, '잠실');
+    expect(loaded.first.timing, AlertTiming.twoStationsBefore);
     expect(loaded.first.vibration, false);
+  });
+
+  test('defaults legacy alerts to arrival timing', () async {
+    SharedPreferences.setMockInitialValues({
+      'subway_push.alerts':
+          '[{"stationName":"잠실","push":true,"vibration":false,"voice":false}]',
+    });
+    final storage = AlertStorage();
+
+    final loaded = await storage.loadAlerts();
+
+    expect(loaded, hasLength(1));
+    expect(loaded!.first.timing, AlertTiming.onArrival);
   });
 
   test('returns null for invalid stored data', () async {

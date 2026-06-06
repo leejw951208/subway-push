@@ -7,6 +7,7 @@ describe("parseAlertBody", () => {
             parseAlertBody({
                 stationName: "잠실",
                 lines: ["2", "8"],
+                timing: "two_stations_before",
                 push: true,
                 vibration: false,
                 voice: true,
@@ -15,10 +16,20 @@ describe("parseAlertBody", () => {
             stationName: "잠실",
             description: null,
             lines: ["2", "8"],
+            timing: "two_stations_before",
             push: true,
             vibration: false,
             voice: true,
         })
+    })
+
+    it("defaults missing timing to on_arrival", () => {
+        expect(
+            parseAlertBody({
+                stationName: "잠실",
+                push: true,
+            }).timing,
+        ).toBe("on_arrival")
     })
 
     it("rejects missing stationName", () => {

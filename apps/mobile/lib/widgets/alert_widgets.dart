@@ -199,6 +199,10 @@ class AlertMethods extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
+      _Method(
+          icon: Icons.schedule_rounded,
+          label: alert.timing.label,
+          small: small),
       if (alert.push)
         _Method(icon: Icons.notifications_rounded, label: '푸시', small: small),
       if (alert.vibration)

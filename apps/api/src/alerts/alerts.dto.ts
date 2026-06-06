@@ -4,6 +4,7 @@ export type AlertDto = {
     stationName: string
     description: string | null
     lines: string[]
+    timing: string
     push: boolean
     vibration: boolean
     voice: boolean
@@ -15,6 +16,7 @@ export type AlertBody = {
     stationName?: unknown
     description?: unknown
     lines?: unknown
+    timing?: unknown
     push?: unknown
     vibration?: unknown
     voice?: unknown
@@ -30,6 +32,8 @@ export function parseAlertBody(body: AlertBody) {
     const vibration =
         typeof body.vibration === "boolean" ? body.vibration : true
     const voice = typeof body.voice === "boolean" ? body.voice : false
+    const timing =
+        typeof body.timing === "string" ? body.timing.trim() : "on_arrival"
     const description =
         typeof body.description === "string" ? body.description : null
 
@@ -45,6 +49,7 @@ export function parseAlertBody(body: AlertBody) {
         stationName,
         description,
         lines,
+        timing,
         push,
         vibration,
         voice,

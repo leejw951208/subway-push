@@ -21,6 +21,7 @@ model Alert {
   stationName String
   description String?
   lines     String[]
+  timing    String   @default("on_arrival")
   push      Boolean  @default(true)
   vibration Boolean  @default(true)
   voice     Boolean  @default(false)

@@ -37,9 +37,11 @@ void main() {
       client: MockClient((request) async {
         expect(request.method, 'POST');
         expect(request.url.path, '/alerts');
+        final body = jsonDecode(request.body) as Map<String, dynamic>;
+        expect(body['timing'], 'two_stations_before');
         return http.Response.bytes(
           utf8.encode(
-            '{"stationName":"잠실","lines":["2","8"],"description":"송파구 · 환승역","push":true,"vibration":true,"voice":false}',
+            '{"stationName":"잠실","lines":["2","8"],"description":"송파구 · 환승역","timing":"two_stations_before","push":true,"vibration":true,"voice":false}',
           ),
           201,
           headers: {'content-type': 'application/json; charset=utf-8'},
@@ -48,11 +50,15 @@ void main() {
     );
 
     final alert = await client.createAlert(
-      SubwayAlert(station: stationByName('잠실')),
+      SubwayAlert(
+        station: stationByName('잠실'),
+        timing: AlertTiming.twoStationsBefore,
+      ),
       findStation: stationByName,
     );
 
     expect(alert.station.name, '잠실');
+    expect(alert.timing, AlertTiming.twoStationsBefore);
   });
 
   test('throws for non-success responses', () async {

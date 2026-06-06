@@ -10,6 +10,7 @@ describe("AlertsController", () => {
         stationName: "잠실",
         description: "송파구 · 환승역",
         lines: ["2", "8"],
+        timing: "two_stations_before",
         push: true,
         vibration: true,
         voice: false,

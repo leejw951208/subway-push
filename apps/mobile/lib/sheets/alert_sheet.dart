@@ -19,6 +19,7 @@ class AlertSheet extends StatefulWidget {
 }
 
 class _AlertSheetState extends State<AlertSheet> {
+  late AlertTiming _timing = widget.existing?.timing ?? AlertTiming.onArrival;
   late bool _push = widget.existing?.push ?? true;
   late bool _vibration = widget.existing?.vibration ?? true;
   late bool _voice = widget.existing?.voice ?? false;
@@ -103,6 +104,28 @@ class _AlertSheetState extends State<AlertSheet> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 4),
             child: Text(
+              '알림 시점',
+              style: TextStyle(
+                  color: appMuted, fontSize: 13, fontWeight: FontWeight.w800),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final timing in AlertTiming.values)
+                _TimingChip(
+                  timing: timing,
+                  selected: _timing == timing,
+                  onTap: () => setState(() => _timing = timing),
+                ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
               '도착 알림 방식',
               style: TextStyle(
                   color: appMuted, fontSize: 13, fontWeight: FontWeight.w800),
@@ -138,7 +161,10 @@ class _AlertSheetState extends State<AlertSheet> {
             enabled: _hasAny,
             onPressed: () => Navigator.of(context).pop(
               AlertSheetResult(
-                  push: _push, vibration: _vibration, voice: _voice),
+                  timing: _timing,
+                  push: _push,
+                  vibration: _vibration,
+                  voice: _voice),
             ),
           ),
           if (widget.existing != null) ...[
@@ -147,12 +173,55 @@ class _AlertSheetState extends State<AlertSheet> {
               label: '알림 해제하기',
               onPressed: () => Navigator.of(context).pop(
                 const AlertSheetResult(
-                    push: false, vibration: false, voice: false, remove: true),
+                    timing: AlertTiming.onArrival,
+                    push: false,
+                    vibration: false,
+                    voice: false,
+                    remove: true),
               ),
             ),
           ],
           SizedBox(height: MediaQuery.paddingOf(context).bottom + 4),
         ],
+      ),
+    );
+  }
+}
+
+class _TimingChip extends StatelessWidget {
+  const _TimingChip({
+    required this.timing,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final AlertTiming timing;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: selected ? const Color(0x403B82F6) : const Color(0x0D0F172A),
+            width: selected ? 1.5 : 1,
+          ),
+        ),
+        child: Text(
+          timing.label,
+          style: TextStyle(
+            color: selected ? const Color(0xFF1D4ED8) : appInk,
+            fontSize: 13,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
       ),
     );
   }
