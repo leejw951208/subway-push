@@ -88,18 +88,21 @@ data/stations.json
 
 ### 갱신 절차
 
-1. 공식 데이터 원천에서 최신 역 데이터를 가져온다.
-2. 역명, 호선, 설명, 좌표, 외부 역 코드 같은 필드를 정규화한다.
-3. 환승역과 중복 역을 병합한다.
-4. 단일 원본 JSON을 갱신한다.
-5. API용 TypeScript 파일과 모바일용 Dart 파일을 생성한다.
-6. 생성 결과 diff를 사람이 검토한다.
-7. 역 검색, API stations 테스트, 모바일 데이터 로딩 테스트를 실행한다.
-8. 변경 내용을 커밋한다.
+1. 루트 `.env`에 `SEOUL_OPEN_DATA_API_KEY`가 있는지 확인한다.
+2. 아래 명령으로 서울 열린데이터광장에서 최신 역 데이터를 가져온다.
+
+```sh
+npm run update:stations
+```
+
+3. 생성 결과 diff를 사람이 검토한다.
+4. 역 검색, API stations 테스트, 모바일 데이터 로딩 테스트를 실행한다.
+5. 변경 내용을 커밋한다.
 
 ### 검증 명령
 
 ```sh
+npm run test:stations
 npm run api:test
 flutter test apps/mobile
 ```

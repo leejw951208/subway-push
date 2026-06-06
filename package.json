@@ -12,6 +12,8 @@
         "api:start": "npm run start -w @subway-push/api",
         "api:test": "npm run test -w @subway-push/api",
         "api:lint": "npm run lint -w @subway-push/api",
+        "update:stations": "node scripts/update-stations.mjs",
+        "test:stations": "node --test scripts/station-data.test.mjs",
         "prisma:generate": "npm run prisma:generate -w @subway-push/api",
         "prisma:migrate": "npm run prisma:migrate -w @subway-push/api",
         "prisma:studio": "npm run prisma:studio -w @subway-push/api"
