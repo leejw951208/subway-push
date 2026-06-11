@@ -20,7 +20,7 @@
 | CLOSED | - | DONE | S006 | `data/stations.json`을 기준으로 API TypeScript 파일을 생성한다. | `scripts/station-data.mjs:215`, `scripts/update-stations.mjs:37`, `apps/api/src/stations/stations.data.ts:1` | - |
 | CLOSED | - | DONE | S007 | `data/stations.json`을 기준으로 모바일 Dart 파일을 생성한다. | `scripts/station-data.mjs:243`, `scripts/update-stations.mjs:41`, `apps/mobile/lib/data/stations.dart:1` | - |
 | CLOSED | - | DONE | S008 | line color 누락을 검증하고 누락 시 경고한다. | `scripts/station-data.mjs:273`, `scripts/update-stations.mjs:27` | - |
-| CLOSED | - | DONE | S009 | 갱신 명령과 검증 명령을 문서화한다. | `package.json:15`, `package.json:16`, `docs/wiki/wiki/runbook.md:91` | - |
+| CLOSED | - | DONE | S009 | 갱신 명령과 검증 명령을 문서화한다. | `package.json:15`, `package.json:16`, `docs/features/latest-station-data-update/progress.md:47` | - |
 
 **요약:** DONE 9 / PARTIAL 0 / NOT DONE 0 / CHANGED 0
 
@@ -48,7 +48,7 @@
 | CLOSED | - | DONE | T016 | `scripts/station-data.test.mjs:120`, `scripts/station-data.test.mjs:130`, `npm run test:stations` 통과 | - |
 | CLOSED | - | DONE | T017 | `npm run update:stations` 실행 결과 655개 역 생성 | - |
 | CLOSED | - | DONE | T018 | `npm run api:test`, `flutter test apps/mobile` 통과 | - |
-| CLOSED | - | DONE | T019 | `docs/wiki/wiki/runbook.md:91`, `docs/wiki/wiki/runbook.md:105` | - |
+| CLOSED | - | DONE | T019 | `docs/features/latest-station-data-update/progress.md:47`, `package.json:15`, `package.json:16` | - |
 
 **스코프 이탈:** 없음
 

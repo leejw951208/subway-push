@@ -29,12 +29,12 @@
 | -------- | ------ | ---- | ------ | ---- | --------- |
 | CLOSED | - | DONE | T001 `location-permissions` 계획 문서 제거 또는 대체 상태 정리 | docs/features/station-alert-selection/progress.md:21, `rtk rg --files docs/features/location-permissions` 결과 없음 | - |
 | CLOSED | - | DONE | T002 `station-alert-selection` 기능 문서 추가 | docs/features/station-alert-selection/spec.md:1, docs/features/station-alert-selection/plan.md:1, docs/features/station-alert-selection/phase.md:1 | - |
-| CLOSED | - | DONE | T003 위키나 기능 backlog에 위치 권한 기본 전략이 남아 있는지 확인 | docs/features/README.md:206, docs/wiki/wiki/architecture.md:64, docs/wiki/wiki/features.md:25 | - |
+| CLOSED | - | DONE | T003 기능 backlog에 위치 권한 기본 전략이 남아 있는지 확인 | docs/features/README.md:206 | - |
 | CLOSED | - | DONE | T004 홈 화면과 알림 시트가 위치 권한 없이 역 선택만으로 동작하는지 확인 | apps/mobile/lib/screens/home_screen.dart:96, apps/mobile/lib/sheets/alert_sheet.dart:107, apps/mobile/lib/sheets/alert_sheet.dart:129 | - |
 | CLOSED | - | DONE | T005 위치 권한 요청 UI 또는 문구가 있다면 제거 | apps/mobile/lib/widgets/search_pebble.dart:38, apps/mobile/lib/screens/home_screen.dart:383, apps/mobile/test/widget_test.dart:44 | - |
 | CLOSED | - | DONE | T006 내릴 역 선택 흐름의 테스트 기대값을 유지 또는 보강 | apps/mobile/test/widget_test.dart:42, apps/mobile/test/widget_test.dart:46 | - |
-| CLOSED | - | DONE | T007 `SubwayAlert.station`이 내릴 역 의미로 쓰이는지 코드와 문서에서 확인 | apps/mobile/lib/state/alert_controller.dart:29, docs/wiki/wiki/architecture.md:68, docs/features/station-alert-selection/progress.md:37 | - |
-| CLOSED | - | DONE | T008 수동 탑승 모드가 후속 기능임을 wiki 또는 feature backlog에 기록 | docs/features/README.md:215, docs/wiki/wiki/architecture.md:69 | - |
+| CLOSED | - | DONE | T007 `SubwayAlert.station`이 내릴 역 의미로 쓰이는지 코드와 문서에서 확인 | apps/mobile/lib/state/alert_controller.dart:29, docs/features/station-alert-selection/progress.md:37 | - |
+| CLOSED | - | DONE | T008 수동 탑승 모드가 후속 기능임을 feature backlog에 기록 | docs/features/README.md:215 | - |
 | CLOSED | - | DONE | T009 `flutter test apps/mobile` 실행 | `rtk flutter test apps/mobile` 결과 19개 테스트 통과 | - |
 | CLOSED | - | DONE | T010 `npm run api:test` 실행 | `rtk npm run api:test` 결과 6개 suite, 16개 테스트 통과 | - |
 | CLOSED | - | DONE | T011 iOS 시뮬레이터에서 위치 권한 없이 역 선택과 알림 설정 흐름을 수동 확인 | docs/features/station-alert-selection/progress.md:40 | - |

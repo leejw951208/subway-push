@@ -40,7 +40,7 @@
 | T016 | 생성된 API station 데이터와 모바일 station 데이터 일관성 검증 | ✅ 완료 |
 | T017 | `npm run update:stations` 실행 후 diff 검토 | ✅ 완료 |
 | T018 | `npm run api:test`, `flutter test apps/mobile` 실행 | ✅ 완료 |
-| T019 | `docs/wiki/wiki/runbook.md`에 실제 명령과 주의사항 갱신 | ✅ 완료 |
+| T019 | 기능 문서에 실제 명령과 주의사항 갱신 | ✅ 완료 |
 
 ## 최근 업데이트
 
